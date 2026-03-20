@@ -1,0 +1,107 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { experiences } from "@/data/experience";
+import { staggerContainer, staggerItem } from "@/utils/animations";
+
+export default function Experience() {
+  return (
+    <section id="experience" className="section">
+      <div className="section-container">
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true }}
+        >
+          <h2 className="section-title">Experience</h2>
+          <p className="section-subtitle">
+            My professional journey and achievements
+          </p>
+        </motion.div>
+
+        <motion.div
+          className="space-y-8"
+          variants={staggerContainer}
+          initial="initial"
+          whileInView="animate"
+          viewport={{ once: true }}
+        >
+          {experiences.map((exp, index) => (
+            <motion.div
+              key={exp.id}
+              variants={staggerItem}
+              className="relative"
+            >
+              {/* Timeline Line */}
+              {index !== experiences.length - 1 && (
+                <div className="absolute left-8 top-20 w-0.5 h-16 bg-gradient-to-b from-accent to-transparent"></div>
+              )}
+
+              <motion.div
+                whileHover={{ scale: 1.02, x: 10 }}
+                className="p-6 rounded-lg glass hover:border-accent/50 smooth-transition border border-accent/20 flex gap-6"
+              >
+                {/* Timeline Dot */}
+                <div className="flex-shrink-0">
+                  <motion.div
+                    whileHover={{ scale: 1.2 }}
+                    className="w-4 h-4 rounded-full bg-accent border-4 border-primary mt-2"
+                  ></motion.div>
+                </div>
+
+                {/* Content */}
+                <div className="flex-1">
+                  <div className="flex items-start justify-between mb-3">
+                    <div>
+                      <h3 className="text-lg font-bold text-accent">
+                        {exp.position}
+                      </h3>
+                      <p className="text-text font-semibold">{exp.company}</p>
+                      <p className="text-text-muted text-sm">
+                        {exp.location} • {exp.startDate} - {exp.endDate}
+                        {exp.isCurrent && (
+                          <span className="ml-2 inline-block px-2 py-1 bg-accent/20 border border-accent/50 rounded text-xs text-accent font-semibold">
+                            Current
+                          </span>
+                        )}
+                      </p>
+                    </div>
+                    <span className="px-3 py-1 rounded-full bg-accent/10 border border-accent/30 text-accent text-xs font-semibold capitalize">
+                      {exp.type}
+                    </span>
+                  </div>
+
+                  {/* Description */}
+                  <ul className="space-y-2 mb-4">
+                    {exp.description.map((desc, idx) => (
+                      <li
+                        key={idx}
+                        className="text-text-muted text-sm flex items-start gap-2"
+                      >
+                        <span className="text-accent mt-1">•</span>
+                        <span>{desc}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  {/* Technologies */}
+                  <div className="flex flex-wrap gap-2">
+                    {exp.technologies.map((tech, idx) => (
+                      <span
+                        key={idx}
+                        className="px-3 py-1 rounded-full bg-secondary/50 border border-accent/20 text-text text-xs font-semibold"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
+    </section>
+  );
+}
